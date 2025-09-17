@@ -1,14 +1,30 @@
-import EventsTable from "@/features/events/components/EventsTable";
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from "@tanstack/react-query";
+
+import EventsClient from "@/features/events/components/EventClient";
 import { eventClient } from "@/lib/connect";
 
 const Page = async () => {
-  const projectsRes = await eventClient.listProjects({});
-  const firstProjectId = projectsRes.projects[0]?.id;
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ["projects"],
+    queryFn: async () => (await eventClient.listProjects({})).projects,
+  });
 
   return (
-    <>
-      <EventsTable projectId={firstProjectId} />
-    </>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <EventsClient
+        initialProjectId={
+          queryClient.getQueryData<{ id: string; name?: string }[]>([
+            "projects",
+          ])?.[0]?.id ?? ""
+        }
+      />
+    </HydrationBoundary>
   );
 };
 

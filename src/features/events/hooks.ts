@@ -5,12 +5,10 @@ import { listEventsServer } from "./api";
 
 export function useEvents({
   projectId,
-
-  pageSize = 15,
+  pageSize,
   pageToken,
 }: {
   projectId: string;
-
   pageSize?: number;
   pageToken?: string;
 }) {

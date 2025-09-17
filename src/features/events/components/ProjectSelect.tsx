@@ -9,18 +9,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export type ProjectOption = { id: string; name?: string | undefined };
-
 export default function ProjectSelect({
   projects,
   value,
   onChange,
 }: {
-  projects: ProjectOption[];
+  projects: { id: string; displayName: string }[];
   value?: string;
   onChange: (projectId: string) => void;
 }) {
   const opts = useMemo(() => projects ?? [], [projects]);
+
   return (
     <div className="w-64">
       <Select value={value} onValueChange={onChange}>
@@ -30,7 +29,7 @@ export default function ProjectSelect({
         <SelectContent>
           {opts.map((p) => (
             <SelectItem key={p.id} value={p.id}>
-              {p.name ?? p.id}
+              {p.displayName ?? p.id}
             </SelectItem>
           ))}
         </SelectContent>

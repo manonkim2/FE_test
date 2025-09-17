@@ -19,7 +19,7 @@ const Page = async () => {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <EventsClient
         initialProjectId={
-          queryClient.getQueryData<{ id: string; name?: string }[]>([
+          queryClient.getQueryData<{ id: string; displayName?: string }[]>([
             "projects",
           ])?.[0]?.id ?? ""
         }

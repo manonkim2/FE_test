@@ -2,17 +2,17 @@
 
 import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { format } from "date-fns";
 
-import { useEvents } from "@/features/events/hooks";
-import { eventClient } from "@/lib/connect";
-import { getDefaultLast30DaysPeriod, getPeriodRange } from "@/lib/time";
-import { buildFilter } from "@/lib/filter";
 import ProjectSelect from "./ProjectSelect";
 import PeriodSelect, { PeriodValue } from "./PeriodSelect";
 import EventTable, { IEventRow } from "./EventTable";
 import Pagination from "./Pagination";
 import TableSkeleton from "./TableSkeleton";
-import { format } from "date-fns";
+import { useEvents } from "@/features/events/hooks";
+import { eventClient } from "@/lib/connect";
+import { getDefaultLast30DaysPeriod, getPeriodRange } from "@/lib/time";
+import { buildFilter } from "@/lib/filter";
 
 const PAGE_SIZE = 15;
 
@@ -34,9 +34,13 @@ const EventsClient = ({ initialProjectId }: { initialProjectId: string }) => {
 
   const [period, setPeriod] = useState<PeriodValue>(getDefaultLast30DaysPeriod);
 
-  const filter = useMemo(() => {
+  const { filter, startZ, endZ } = useMemo(() => {
     const { startZ, endZ } = getPeriodRange(period, timezone ?? "UTC");
-    return buildFilter({ startZ, endZ });
+    return {
+      filter: buildFilter({ startZ, endZ }),
+      startZ,
+      endZ,
+    };
   }, [period, timezone]);
 
   const { data, isLoading, isError, error } = useEvents({
@@ -99,14 +103,8 @@ const EventsClient = ({ initialProjectId }: { initialProjectId: string }) => {
         <div className="flex justify-between text-sm text-muted-foreground px-1">
           <span>{data?.totalSize ?? 0} events</span>
           <span>
-            {period.start &&
-              period.end &&
-              (format(period.start, "PP") === format(period.end, "PP")
-                ? format(period.start, "PP")
-                : `${format(period.start, "PP")} ~ ${format(
-                    period.end,
-                    "PP"
-                  )}`)}
+            {format(new Date(startZ), "PP")}
+            {startZ !== endZ && ` ~ ${format(new Date(endZ), "PP")}`}
           </span>
         </div>
 

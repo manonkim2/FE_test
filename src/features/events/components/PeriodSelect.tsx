@@ -19,8 +19,8 @@ export type PeriodKey =
 
 export interface PeriodValue {
   key: PeriodKey;
-  start: Date; // tz 기준 start 00:00
-  end: Date; // tz 기준 end (open-end 전용 계산은 상위에서 처리)
+  start: Date;
+  end: Date;
 }
 
 export default function PeriodSelect({

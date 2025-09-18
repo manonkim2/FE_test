@@ -6,15 +6,18 @@ export async function listEventsServer({
   projectId,
   pageSize,
   pageToken,
+  filter,
 }: {
   projectId: string;
   pageSize?: number;
   pageToken?: string;
+  filter?: string;
 }) {
   const res = await eventClient.listEvents({
     projectId,
     pageSize,
     pageToken,
+    filter,
   });
 
   return {

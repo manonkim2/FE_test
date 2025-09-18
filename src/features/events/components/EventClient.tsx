@@ -5,7 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 
 import { useEvents } from "@/features/events/hooks";
 import { eventClient } from "@/lib/connect";
+import { getDefaultLast30DaysPeriod, getPeriodRange } from "@/lib/time";
+import { buildFilter } from "@/lib/filter";
 import ProjectSelect from "./ProjectSelect";
+import PeriodSelect, { PeriodValue } from "./PeriodSelect";
 import EventTable, { IEventRow } from "./EventTable";
 import Pagination from "./Pagination";
 
@@ -22,17 +25,24 @@ const EventsClient = ({ initialProjectId }: { initialProjectId: string }) => {
   });
 
   const currentPageToken = pageTokens[pageIndex];
+  const selectedProjectObj = projectsData?.find(
+    (p) => p.id === selectedProject
+  );
+  const timezone = selectedProjectObj?.timeZone?.id;
+
+  const [period, setPeriod] = useState<PeriodValue>(getDefaultLast30DaysPeriod);
+
+  const filter = useMemo(() => {
+    const { startZ, endZ } = getPeriodRange(period, timezone ?? "UTC");
+    return buildFilter({ startZ, endZ });
+  }, [period, timezone]);
 
   const { data, isLoading } = useEvents({
     projectId: selectedProject,
     pageSize: PAGE_SIZE,
     pageToken: currentPageToken,
+    filter,
   });
-
-  const selectedProjectObj = projectsData?.find(
-    (p) => p.id === selectedProject
-  );
-  const timezone = selectedProjectObj?.timeZone?.id;
 
   const rows: IEventRow[] = useMemo(
     () =>
@@ -69,6 +79,14 @@ const EventsClient = ({ initialProjectId }: { initialProjectId: string }) => {
           value={selectedProject}
           onChange={(pid) => {
             setSelectedProject(pid);
+            setPageTokens([""]);
+            setPageIndex(0);
+          }}
+        />
+        <PeriodSelect
+          value={period}
+          onChange={(p) => {
+            setPeriod(p);
             setPageTokens([""]);
             setPageIndex(0);
           }}

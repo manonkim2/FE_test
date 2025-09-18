@@ -130,12 +130,28 @@ export default function PeriodSelect({
               <Calendar
                 mode="single"
                 selected={customEnd}
-                onSelect={(d) => d && setCustomEnd(startOfDay(d))}
+                disabled={(date) => !!customStart && date < customStart}
+                onSelect={(d) => {
+                  if (!d) return;
+                  const normalized = startOfDay(d);
+                  if (customStart && normalized < customStart) {
+                    // Prevent selecting before start
+                    return;
+                  }
+                  setCustomEnd(normalized);
+                }}
               />
             </div>
           </div>
           <div className="mt-3 flex justify-end gap-2">
-            <Button variant="ghost" onClick={() => setOpen(false)}>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                setOpen(false);
+                setCustomStart(value.start);
+                setCustomEnd(value.end);
+              }}
+            >
               Cancel
             </Button>
             <Button

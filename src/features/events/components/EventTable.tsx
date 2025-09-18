@@ -58,9 +58,7 @@ export default function EventsTable({
         ) : (
           rows.map((e) => (
             <TableRow key={e.id} className="text-center">
-              <TableCell className="font-mono text-xs break-all">
-                {e.id}
-              </TableCell>
+              <TableCell>{e.id}</TableCell>
               <TableCell>{e.type}</TableCell>
               <TableCell>{formatTime(e.createTime, timezone)}</TableCell>
             </TableRow>

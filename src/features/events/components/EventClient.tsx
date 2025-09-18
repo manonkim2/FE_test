@@ -12,6 +12,7 @@ import PeriodSelect, { PeriodValue } from "./PeriodSelect";
 import EventTable, { IEventRow } from "./EventTable";
 import Pagination from "./Pagination";
 import TableSkeleton from "./TableSkeleton";
+import { format } from "date-fns";
 
 const PAGE_SIZE = 15;
 
@@ -103,12 +104,24 @@ const EventsClient = ({ initialProjectId }: { initialProjectId: string }) => {
         />
       </div>
 
-      <div className="rounded-xl border bg-card">
-        {isLoading ? (
-          <TableSkeleton />
-        ) : (
-          <EventTable rows={rows} timezone={timezone ?? "UTC"} />
-        )}
+      <div className="flex flex-col gap-1">
+        <div className="flex justify-between text-sm text-muted-foreground px-1">
+          <span>{data?.totalSize ?? 0} events</span>
+          <span>
+            {period.key === "custom" &&
+              period.start &&
+              period.end &&
+              `${format(period.start, "PP")} – ${format(period.end, "PP")}`}
+          </span>
+        </div>
+
+        <div className="rounded-xl border bg-card">
+          {isLoading ? (
+            <TableSkeleton />
+          ) : (
+            <EventTable rows={rows} timezone={timezone ?? "UTC"} />
+          )}
+        </div>
       </div>
 
       <Pagination

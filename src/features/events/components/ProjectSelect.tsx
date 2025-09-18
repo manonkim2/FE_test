@@ -23,7 +23,7 @@ export default function ProjectSelect({
   return (
     <div className="w-64">
       <Select value={value} onValueChange={onChange}>
-        <SelectTrigger>
+        <SelectTrigger className="w-48">
           <SelectValue placeholder="Select project" />
         </SelectTrigger>
         <SelectContent>

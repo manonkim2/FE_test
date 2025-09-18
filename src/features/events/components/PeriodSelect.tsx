@@ -97,7 +97,7 @@ export default function PeriodSelect({
       {buttons.map((b) => (
         <Button
           key={b.key}
-          variant={value.key === b.key ? "default" : "secondary"}
+          variant={value.key === b.key ? "default" : "outline"}
           onClick={() => applyPreset(b.key)}
           className="h-9"
         >
@@ -108,7 +108,7 @@ export default function PeriodSelect({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
-            variant={value.key === "custom" ? "default" : "secondary"}
+            variant={value.key === "custom" ? "default" : "outline"}
             onClick={() => setOpen(true)}
             className="h-9"
           >

@@ -73,15 +73,6 @@ const EventsClient = ({ initialProjectId }: { initialProjectId: string }) => {
     }
   };
 
-  if (isError) {
-    return (
-      <div className="p-6 flex flex-col items-center text-red-600">
-        <p className="font-medium">Failed to load events</p>
-        <p className="text-sm">{(error as Error).message}</p>
-      </div>
-    );
-  }
-
   return (
     <div className="p-6 space-y-4">
       <div className="flex items-center justify-between gap-4 flex-wrap">
@@ -108,16 +99,25 @@ const EventsClient = ({ initialProjectId }: { initialProjectId: string }) => {
         <div className="flex justify-between text-sm text-muted-foreground px-1">
           <span>{data?.totalSize ?? 0} events</span>
           <span>
-            {period.key === "custom" &&
-              period.start &&
+            {period.start &&
               period.end &&
-              `${format(period.start, "PP")} – ${format(period.end, "PP")}`}
+              (format(period.start, "PP") === format(period.end, "PP")
+                ? format(period.start, "PP")
+                : `${format(period.start, "PP")} ~ ${format(
+                    period.end,
+                    "PP"
+                  )}`)}
           </span>
         </div>
 
         <div className="rounded-xl border bg-card">
           {isLoading ? (
             <TableSkeleton />
+          ) : isError ? (
+            <div className="p-6 text-center text-red-600">
+              <p className="font-light text-sm">Failed to load events</p>
+              <p className="text-sm">{(error as Error).message}</p>
+            </div>
           ) : (
             <EventTable rows={rows} timezone={timezone ?? "UTC"} />
           )}

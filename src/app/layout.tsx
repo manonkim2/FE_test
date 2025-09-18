@@ -7,7 +7,6 @@ export const metadata: Metadata = {
   description: "Coxwave frontend test: 이벤트 로그 뷰어",
   applicationName: "Coxwave test",
   authors: [{ name: "Wonyoung Kim" }],
-  viewport: "width=device-width, initial-scale=1",
 };
 
 export default function RootLayout({
@@ -17,8 +16,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="mx-auto max-w-6xl">
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+      <body className="flex justify-center">
+        <div className="w-full max-w-6xl px-6">
+          <ReactQueryProvider>{children}</ReactQueryProvider>
+        </div>
       </body>
     </html>
   );

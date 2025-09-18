@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="mx-auto max-w-6xl">
         <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>
     </html>

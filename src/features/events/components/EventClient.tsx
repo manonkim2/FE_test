@@ -11,6 +11,7 @@ import ProjectSelect from "./ProjectSelect";
 import PeriodSelect, { PeriodValue } from "./PeriodSelect";
 import EventTable, { IEventRow } from "./EventTable";
 import Pagination from "./Pagination";
+import TableSkeleton from "./TableSkeleton";
 
 const PAGE_SIZE = 15;
 
@@ -37,7 +38,7 @@ const EventsClient = ({ initialProjectId }: { initialProjectId: string }) => {
     return buildFilter({ startZ, endZ });
   }, [period, timezone]);
 
-  const { data, isLoading } = useEvents({
+  const { data, isLoading, isError, error } = useEvents({
     projectId: selectedProject,
     pageSize: PAGE_SIZE,
     pageToken: currentPageToken,
@@ -71,6 +72,15 @@ const EventsClient = ({ initialProjectId }: { initialProjectId: string }) => {
     }
   };
 
+  if (isError) {
+    return (
+      <div className="p-6 flex flex-col items-center text-red-600">
+        <p className="font-medium">Failed to load events</p>
+        <p className="text-sm">{(error as Error).message}</p>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 space-y-4">
       <div className="flex items-center justify-between gap-4 flex-wrap">
@@ -94,7 +104,11 @@ const EventsClient = ({ initialProjectId }: { initialProjectId: string }) => {
       </div>
 
       <div className="rounded-xl border bg-card">
-        <EventTable rows={rows} timezone={timezone ?? "UTC"} />
+        {isLoading ? (
+          <TableSkeleton />
+        ) : (
+          <EventTable rows={rows} timezone={timezone ?? "UTC"} />
+        )}
       </div>
 
       <Pagination

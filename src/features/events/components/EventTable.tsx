@@ -40,21 +40,32 @@ export default function EventsTable({
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[44%]">ID</TableHead>
-          <TableHead className="w-[20%]">Type</TableHead>
-          <TableHead>CreateTime</TableHead>
+          <TableHead className="w-[30%] text-center ">ID</TableHead>
+          <TableHead className="w-[30%] text-center">Type</TableHead>
+          <TableHead className="text-center">CreateTime</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
-        {rows.map((e) => (
-          <TableRow key={e.id}>
-            <TableCell className="font-mono text-xs break-all">
-              {e.id}
+        {rows.length === 0 ? (
+          <TableRow>
+            <TableCell
+              colSpan={3}
+              className="text-center text-muted-foreground h-[70vh]"
+            >
+              No events found for the selected project and period
             </TableCell>
-            <TableCell>{e.type}</TableCell>
-            <TableCell>{formatTime(e.createTime, timezone)}</TableCell>
           </TableRow>
-        ))}
+        ) : (
+          rows.map((e) => (
+            <TableRow key={e.id} className="text-center">
+              <TableCell className="font-mono text-xs break-all">
+                {e.id}
+              </TableCell>
+              <TableCell>{e.type}</TableCell>
+              <TableCell>{formatTime(e.createTime, timezone)}</TableCell>
+            </TableRow>
+          ))
+        )}
       </TableBody>
     </Table>
   );

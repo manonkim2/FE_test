@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest"
+    "test": "vitest",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@buf/alignai_frontend-challenge-datetz.connectrpc_query-es": "^2.2.0-20241219080248-3c3bb9f9b2aa.1",

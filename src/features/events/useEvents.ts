@@ -14,9 +14,13 @@ export function useEvents({
   pageToken?: string;
   filter?: string;
 }) {
-  return useQuery({
-    queryKey: ["events", projectId, pageToken, filter],
+  const queryKey = ["events", projectId, pageToken, filter];
+
+  const query = useQuery({
+    queryKey,
     queryFn: () => listEventsServer({ projectId, pageSize, pageToken, filter }),
     enabled: !!projectId,
   });
+
+  return { ...query, queryKey };
 }

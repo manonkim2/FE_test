@@ -9,7 +9,7 @@ import PeriodSelect, { PeriodValue } from "./PeriodSelect";
 import EventTable, { IEventRow } from "./EventTable";
 import Pagination from "./Pagination";
 import TableSkeleton from "./TableSkeleton";
-import { useEvents } from "@/features/events/hooks";
+import { useEvents } from "@/features/events/useEvents";
 import { eventClient } from "@/lib/connect";
 import { getDefaultLast30DaysPeriod, getPeriodRange } from "@/lib/time";
 import { buildFilter } from "@/lib/filter";

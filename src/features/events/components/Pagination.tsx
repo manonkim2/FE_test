@@ -20,7 +20,10 @@ const Pagination = ({
   const end = Math.min(total, (currentPage + 1) * pageSize);
 
   return (
-    <div className="flex items-center justify-center gap-4 py-3">
+    <div
+      data-slot="pagination"
+      className="flex items-center justify-center gap-4 py-3"
+    >
       <div className="text-sm text-muted-foreground">
         {start}-{end} of {total}
       </div>

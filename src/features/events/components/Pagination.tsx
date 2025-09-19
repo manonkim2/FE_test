@@ -1,22 +1,23 @@
 "use client";
 
+import React from "react";
 import { Button } from "@/components/ui/button";
 
-export default function Pagination({
+const Pagination = ({
   pageSize = 15,
   total = 0,
-  pageIndex = 0,
+  currentPage = 0,
   onPrev,
   onNext,
 }: {
   pageSize?: number;
   total?: number;
-  pageIndex?: number;
+  currentPage?: number;
   onPrev?: () => void;
   onNext?: () => void;
-}) {
-  const start = total === 0 ? 0 : pageIndex * pageSize + 1;
-  const end = Math.min(total, (pageIndex + 1) * pageSize);
+}) => {
+  const start = total === 0 ? 0 : currentPage * pageSize + 1;
+  const end = Math.min(total, (currentPage + 1) * pageSize);
 
   return (
     <div className="flex items-center justify-center gap-4 py-3">
@@ -24,7 +25,7 @@ export default function Pagination({
         {start}-{end} of {total}
       </div>
       <div className="flex gap-2">
-        <Button variant="outline" onClick={onPrev} disabled={pageIndex === 0}>
+        <Button variant="outline" onClick={onPrev} disabled={currentPage === 0}>
           Prev
         </Button>
         <Button onClick={onNext} disabled={end >= total}>
@@ -33,4 +34,6 @@ export default function Pagination({
       </div>
     </div>
   );
-}
+};
+
+export default Pagination;

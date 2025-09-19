@@ -125,7 +125,7 @@ const EventsClient = ({ initialProjectId }: { initialProjectId: string }) => {
       <Pagination
         pageSize={PAGE_SIZE}
         total={data?.totalSize ?? 0}
-        pageIndex={pageIndex}
+        currentPage={pageIndex}
         onPrev={handlePrev}
         onNext={handleNext}
       />

@@ -1,3 +1,4 @@
+import "@testing-library/jest-dom";
 import { server } from "@/lib/server";
 
 // 모든 테스트 시작 전에 mock 서버 리스닝

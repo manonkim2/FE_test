@@ -1,5 +1,8 @@
 "use client";
 
+import React from "react";
+import { format } from "date-fns-tz";
+
 import {
   Table,
   TableBody,
@@ -8,7 +11,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { format } from "date-fns-tz";
 
 export interface IEventRow {
   id: string;
@@ -19,23 +21,23 @@ export interface IEventRow {
   };
 }
 
-function formatTime(
+const formatTime = (
   ts: { seconds: bigint; nanos: number } | undefined,
   tz: string
-) {
+) => {
   if (!ts) return "-";
   const millis = Number(ts.seconds) * 1000 + Math.floor(ts.nanos / 1e6);
   const date = new Date(millis);
   return format(date, "MMM d, yyyy, h:mm a", { timeZone: tz });
-}
+};
 
-export default function EventsTable({
+const EventTable = ({
   rows,
   timezone,
 }: {
   rows: IEventRow[];
   timezone: string;
-}) {
+}) => {
   return (
     <Table>
       <TableHeader>
@@ -67,4 +69,6 @@ export default function EventsTable({
       </TableBody>
     </Table>
   );
-}
+};
+
+export default EventTable;
